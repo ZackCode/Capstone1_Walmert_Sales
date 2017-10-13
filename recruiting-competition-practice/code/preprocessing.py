@@ -7,10 +7,10 @@ Created on Wed Aug 30 11:02:09 2017
 """
 import pandas as pd
 
-df_key = pd.read_csv("./input/key.csv")
-df_train = pd.read_csv("./input/train.csv")
-df_test = pd.read_csv("./input/test.csv")
-df_weather = pd.read_csv("./input/weather.csv")
+df_key = pd.read_csv("../input/key.csv")
+df_train = pd.read_csv("../input/train.csv")
+df_test = pd.read_csv("../input/test.csv")
+df_weather = pd.read_csv("../input/weather.csv")
 
 df_train['date'] = pd.to_datetime(df_train['date'])
 df_weather['date'] = pd.to_datetime(df_weather['date'])
