@@ -6,6 +6,7 @@ Created on Wed Aug 30 11:02:09 2017
 @author: zexi
 """
 import pandas as pd
+import numpy as np
 
 df_key = pd.read_csv("../input/key.csv")
 df_train = pd.read_csv("../input/train.csv")
@@ -24,9 +25,11 @@ print(df_main_train.shape)
 print(list(df_main_train))
 
 df_ordered = df_main_train.sort_values(['store_nbr','item_nbr','date']).reset_index(drop=True)
-
 #df7 = df7.apply(pd.to_numeric, errors='coerce')
 df_ordered = df_ordered.convert_objects(convert_numeric=True)
+df_ordered['preciptotal'] = df_ordered['preciptotal'].fillna(0)
+df_ordered['snowfall'] = df_ordered['snowfall'].fillna(0)
+df_ordered.loc[((df_ordered['units'] == 3369) | (df_ordered['units'] == 5568)),'units'] = np.nan
 df_ordered = df_ordered.interpolate()
 
 
