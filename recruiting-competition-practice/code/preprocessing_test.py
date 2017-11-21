@@ -4,7 +4,10 @@
 Created on Thu Oct 26 18:02:11 2017
 
 @author: zexi
+
+This file preprocess the test files and save it as ordered_test.csv
 """
+# same structer as preprocessing
 import pandas as pd
 import numpy as np
 

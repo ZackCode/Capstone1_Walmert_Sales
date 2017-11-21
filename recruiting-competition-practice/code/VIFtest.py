@@ -8,77 +8,78 @@ Created on Thu Aug 31 10:47:33 2017
 import pandas as pd
 import numpy as np
 from patsy import dmatrices
+import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
-import math
+# load the data
+df_ordered = pd.read_csv('ordered.csv',sep=',')
+#===================================== define function VIF
 
+def VIF(whole_list,feature_list):
+    '''
+    This function perform VIF on given list, whole_list includes target varaible and all features, and feature_list includes only features
+    '''
+    df = df_ordered
 
-#df7 = pd.read_csv('ordered.csv',sep=',')
-df8 = pd.read_csv('severeWeather.csv',sep=',')
-#=====================================
-mask_test = (df8['item_nbr'] == 5)
-df_test = df8.loc[mask_test]
+    mask = (df['item_nbr'] == 5)
+    df = df.loc[mask]
 
+    df_temperature_related = df[whole_list]
+    df_temperature_related = df_temperature_related.convert_objects(convert_numeric=True).dropna()
+    df_temperature_related = df_temperature_related._get_numeric_data()
+    df_temperature_related = df_temperature_related.reset_index(drop=True)
 
-df11 = df8
+    df_temperature_related_features = df_temperature_related[feature_list]
 
-mask = (df11['item_nbr'] == 11)
-df11 = df11.loc[mask]
+    features = "+".join(df_temperature_related_features.columns)
+    y, X = dmatrices('units ~' + features, df_temperature_related, return_type='dataframe')
 
-df12 = df11[['units','tavg','depart']]
-#df12 = df12.convert_objects(convert_numeric=True).dropna()
-df12 = df12.apply(pd.to_numeric, errors='coerce').dropna()
-df12 = df12._get_numeric_data().reset_index(drop=True)
+    vif = pd.DataFrame()
+    vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+    vif["features"] = X.columns
 
-#===============================================================
-df13 = df12[['tavg','depart']]
+    print vif.round(1)
+    
+#==========================performing on temperature features
+whole_list = ['units','tmax','tmin','tavg','depart','dewpoint','wetbulb','heat','cool']
+feature_list = ['tmax','tmin','tavg','depart','dewpoint','wetbulb','heat','cool']
 
-features = "+".join(df13.columns)
-y, X = dmatrices('units ~' + features, df12, return_type='dataframe')
+VIF(whole_list,feature_list)
 
-vif = pd.DataFrame()
-vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-vif["features"] = X.columns
+whole_list = ['units','tmin','tavg','depart','dewpoint','wetbulb','heat','cool']
+feature_list = ['tmin','tavg','depart','dewpoint','wetbulb','heat','cool']
 
-vif.round(1)
+VIF(whole_list,feature_list)
 
-#=============================================================
-df11 = df8
+whole_list = ['units','tavg','depart','dewpoint','wetbulb','heat','cool']
+feature_list = ['tavg','depart','dewpoint','wetbulb','heat','cool']
 
-mask = (df11['item_nbr'] == 11)
-df11 = df11.loc[mask]
+VIF(whole_list,feature_list)
 
-df12 = df11[['units','snowfall','preciptotal']]
-df12 = df12.apply(pd.to_numeric, errors='coerce').dropna()
-df12 = df12._get_numeric_data()
-df12.reset_index(drop=True)
+whole_list = ['units','tavg','depart','wetbulb','heat','cool']
+feature_list = ['tavg','depart','wetbulb','heat','cool']
 
-df13 = df12[['snowfall','preciptotal']]
+VIF(whole_list,feature_list)
 
-features = "+".join(df13.columns)
-y, X = dmatrices('units ~' + features, df12, return_type='dataframe')
+whole_list = ['units','tavg','depart','wetbulb','cool']
+feature_list = ['tavg','depart','wetbulb','cool']
 
-vif = pd.DataFrame()
-vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-vif["features"] = X.columns
+VIF(whole_list,feature_list)
 
-vif.round(1)
-#==============================================================
-df11 = df8
+whole_list = ['units','tavg','depart','cool']
+feature_list = ['tavg','depart','cool']
 
-mask = (df11['item_nbr'] == 11)
-df11 = df11.loc[mask]
+VIF(whole_list,feature_list)
 
-df12 = df11[['units','stnpressure','sealevel','resultdir','avgspeed']]
-df12 = df12.apply(pd.to_numeric, errors='coerce').dropna()
-df12 = df12._get_numeric_data()
-df12.reset_index(drop=True)
+#=======================performing on wind related features
+whole_list = ['units','stnpressure','sealevel','resultspeed','resultdir','avgspeed']
+feature_list = ['stnpressure','sealevel','resultspeed','resultdir','avgspeed']
+VIF(whole_list,feature_list)
 
-df13 = df12[['stnpressure','sealevel','resultdir','avgspeed']]
+whole_list = ['units','stnpressure','sealevel','resultdir','avgspeed']
+feature_list = ['stnpressure','sealevel','resultdir','avgspeed']
+VIF(whole_list,feature_list)
 
-features = "+".join(df13.columns)
-y, X = dmatrices('units ~' + features, df12, return_type='dataframe')
-
-vif = pd.DataFrame()
-vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-vif["features"] = X.columns
-vif.round(1)
+#====================performing on rainfall features
+whole_list = ['units','snowfall','preciptotal']
+feature_list = ['snowfall','preciptotal']
+VIF(whole_list,feature_list)
