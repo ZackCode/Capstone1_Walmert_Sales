@@ -1510,7 +1510,8 @@ Using its default kernel "rbf", SVM gives better performance than the rest
 \end_layout
 
 \begin_layout Standard
-The best result given by SVM put me in rank 80/485 among all the participants.
+The best result given by SVM put me in rank 80/485 among all the participants,
+ and only has 0.009 difference from the top submission.
  The leaderboard for this competition can be found at here: 
 \begin_inset CommandInset citation
 LatexCommand cite
