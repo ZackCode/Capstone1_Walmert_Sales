@@ -101,7 +101,14 @@ Yu
 \end_layout
 
 \begin_layout Abstract
-I will write the abstract when I finish editing this report.
+This project seeks to solve sales prediction in extreme weather problem
+ raised by Walmart Sales competition.
+ The given datasets are first merged and cleaned, and feature selection
+ is performed to select the most relevant features.
+ Some exploratory methods are deployed to get a clearer idea of the relationship
+ between features and sales record, and several learning methods are used
+ to get the best result.
+ The final result is good on the competition leaderboard.
 \end_layout
 
 \begin_layout Section
